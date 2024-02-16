@@ -4,6 +4,7 @@ import "./globals.css";
 import Header from "./components/header";
 import Footer from "./components/footer";
 import Home from "./page";
+import { ReactQueryClientProvider } from "./hooks/reactQueryClientProvider";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -21,11 +22,13 @@ export default function RootLayout({
     <html lang="en">
       <body className="min-h-screen">
         <main className="flex flex-col justify-between h-screen">
-          <div>
-            <Header />
-            <div className="container mx-auto h-full">{children}</div>
-          </div>
-          <Footer />
+          <ReactQueryClientProvider>
+            <div>
+              <Header />
+              <div className="container mx-auto h-full">{children}</div>
+            </div>
+            <Footer />
+          </ReactQueryClientProvider>
         </main>
       </body>
     </html>
