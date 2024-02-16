@@ -19,10 +19,12 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body>
-        <main>
-          <Header />
-          <div className="container mx-auto h-full">{children}</div>
+      <body className="min-h-screen">
+        <main className="flex flex-col justify-between h-screen">
+          <div>
+            <Header />
+            <div className="container mx-auto h-full">{children}</div>
+          </div>
           <Footer />
         </main>
       </body>
