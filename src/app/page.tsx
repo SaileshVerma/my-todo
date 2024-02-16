@@ -1,4 +1,5 @@
 "use client";
+import axios from "axios";
 import { useState } from "react";
 
 export default function Home() {
@@ -13,12 +14,42 @@ export default function Home() {
     setTodoItemDesc(e.target.value);
   };
 
-  const onSubmitHandler = () => {
+  const onSubmitHandler = async () => {
     if (todoItemTitle == "" || todoItemDesc == "") return;
     const todo = {
+      id: Date.now().toLocaleString(),
       title: todoItemTitle,
       desc: todoItemDesc,
     };
+
+    const createTaskDto = {
+      title: todo.title,
+      desc: todo.desc,
+    };
+
+    const options = {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    };
+
+    // axios
+    //   .get("http://localhost:4001/tasks", options)
+    //   .then((res) => {
+    //     console.log("RESPONSE ==== : ", res);
+    //   })
+    //   .catch((err) => {
+    //     console.log("ERROR: ====", err);
+    //   });
+
+    axios
+      .post("http://localhost:4002/tasks", createTaskDto, options)
+      .then((res) => {
+        console.log("RESPONSE ==== : ", res);
+      })
+      .catch((err) => {
+        console.log("ERROR: ====", err);
+      });
 
     let toDosJson = localStorage.getItem("todos");
     if (toDosJson) {
@@ -36,7 +67,7 @@ export default function Home() {
 
   return (
     <>
-      <section className="  bg-indigo-400 body-font relative w-2/4 mx-auto  h-full">
+      <section className="  bg-indigo-400 body-font relative w-2/4 mx-auto">
         <div className="container  px-2 py-5 mx-auto ">
           <div className="flex flex-col text-center w-full mb-12">
             <h1 className="sm:text-3xl text-2xl font-medium title-font mb-4 text-white">
