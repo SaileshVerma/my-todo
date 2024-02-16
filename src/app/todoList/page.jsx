@@ -1,29 +1,28 @@
 "use client";
+import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import { useEffect, useState } from "react";
+import { useTodoListQuery } from "../hooks/todoHook.js";
 
-interface ToDo {
-  id: string;
-  title: string;
-  desc: string;
-}
+// interface Todo {
+//   id: number;
+//   title: string;
+//   desc: string;
+//   completed: boolean;
+//   // Add any other properties as needed
+// }
+// interface TodoListQueryResult {
+//   data: Todo[] | null;
+//   isLoading: boolean;
+//   error: Error | null;
+// }
 
 export default function ToDoPage() {
-  const [toDosList, setToDosList] = useState([]);
+  // const [toDosList, setToDosList] = useState([]);
 
-  useEffect(() => {
-    axios
-      .get("http://localhost:4002/tasks")
-      .then((res) => {
-        let todosParsedList = JSON.parse(JSON.stringify(res.data));
-        setToDosList(todosParsedList);
-      })
-      .catch((err) => {
-        alert(`Something went wrong ${err}`);
-      });
-  }, []);
+  const { data, isLoading, error } = useTodoListQuery();
 
-  const deleteTodoById = (id: string) => {
+  const deleteTodoById = (id) => {
     axios
       .post(`http://localhost:4002/tasks/${id}`)
       .then((res) => {
@@ -33,12 +32,23 @@ export default function ToDoPage() {
         alert(`Something went wrong ${err}`);
       });
 
-    let todosParsedList = toDosList.filter((todo: ToDo) => {
+    let todosParsedList = toDosList.filter((todo) => {
       return todo.id !== id;
     });
 
     setToDosList(todosParsedList);
   };
+
+  if (isLoading) {
+    console.log("LOADING------------", isLoading);
+
+    return <h1>LOADING WAIT...</h1>;
+  }
+
+  if (error) {
+    console.log("error0000------------", error);
+    return <h1>SOMETHING WENT WRONG....{JSON.stringify(error)}</h1>;
+  }
 
   return (
     <>
@@ -50,11 +60,12 @@ export default function ToDoPage() {
                 <h1 className="sm:text-3xl text-2xl font-medium title-font mb-4 text-black">
                   Your todos
                 </h1>
-                {toDosList.length == 0 ? (
+
+                {data.length == 0 ? (
                   <h1>No todo to display</h1>
                 ) : (
                   <div className="grid grid-cols-3 gap-2">
-                    {toDosList.map((e: ToDo) => {
+                    {data.map((e) => {
                       if (e.title == "") return;
 
                       return (
