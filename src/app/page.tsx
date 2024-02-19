@@ -1,10 +1,12 @@
 "use client";
-import axios from "axios";
 import { useState } from "react";
+import { useCreateTodoMutation } from "../app/hooks/todoHook";
 
 export default function Home() {
   const [todoItemTitle, setTodoItemTitle] = useState("");
   const [todoItemDesc, setTodoItemDesc] = useState("");
+
+  const { mutate, isError, isPending } = useCreateTodoMutation();
 
   const onChangeTitle = (e: any) => {
     setTodoItemTitle(e.target.value);
@@ -20,18 +22,21 @@ export default function Home() {
       id: Date.now().toLocaleString(),
       title: todoItemTitle,
       desc: todoItemDesc,
+      isCompleted: false,
     };
 
-    const createTaskDto = {
-      title: todo.title,
-      desc: todo.desc,
-    };
+    mutate(todo);
 
-    const options = {
-      headers: {
-        "Content-Type": "application/json",
-      },
-    };
+    // const createTaskDto = {
+    //   title: todo.title,
+    //   desc: todo.desc,
+    // };
+
+    // const options = {
+    //   headers: {
+    //     "Content-Type": "application/json",
+    //   },
+    // };
 
     // axios
     //   .get("http://localhost:4001/tasks", options)
@@ -42,24 +47,29 @@ export default function Home() {
     //     console.log("ERROR: ====", err);
     //   });
 
-    axios
-      .post("http://localhost:4002/tasks", createTaskDto, options)
-      .then((res) => {
-        console.log("RESPONSE ==== : ", res);
-      })
-      .catch((err) => {
-        console.log("ERROR: ====", err);
-      });
+    // axios
+    //   .post("http://localhost:4002/tasks", createTaskDto, options)
+    //   .then((res) => {
+    //     console.log("RESPONSE ==== : ", res);
+    //   })
+    //   .catch((err) => {
+    //     console.log("ERROR: ====", err);
+    //   });
 
-    let toDosJson = localStorage.getItem("todos");
-    if (toDosJson) {
-      let toDosList = JSON.parse(toDosJson);
-      toDosList.push(todo);
+    // let toDosJson = localStorage.getItem("todos");
+    // if (toDosJson) {
+    //   let toDosList = JSON.parse(toDosJson);
+    //   toDosList.push(todo);
 
-      localStorage.setItem("todos", JSON.stringify(toDosList));
-    } else {
-      localStorage.setItem("todos", JSON.stringify([todo]));
-    }
+    //   localStorage.setItem("todos", JSON.stringify(toDosList));
+    // } else {
+    //   localStorage.setItem("todos", JSON.stringify([todo]));
+    // }
+
+    // const variables = {
+    //   title: todoItemTitle,
+    //   desc: todoItemDesc,
+    // };
 
     setTodoItemTitle("");
     setTodoItemDesc("");
@@ -106,6 +116,7 @@ export default function Home() {
               </div>
               <div className="p-6 w-full ">
                 <button
+                  disabled={isPending}
                   onClick={onSubmitHandler}
                   className="flex mx-auto text-white bg-indigo-500 border-0 py-2 px-8 focus:outline-none hover:bg-indigo-600 rounded text-lg"
                 >
