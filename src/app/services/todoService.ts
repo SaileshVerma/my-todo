@@ -1,4 +1,6 @@
-const { default: axios } = require("axios");
+import {Todo} from "../models/todo";
+
+const {default: axios} = require("axios");
 
 class ToDoService {
     async getToDos() {
@@ -12,11 +14,10 @@ class ToDoService {
     }
 
 
-    async createToDo({ title, desc }) {
-
+    async createToDo(todo: Todo) {
         const createTaskDto = {
-            title: title,
-            desc: desc,
+            title: todo.title,
+            desc: todo.desc,
             isCompleted: false
         };
 
@@ -34,7 +35,7 @@ class ToDoService {
     }
 
 
-    async deleteTodo({ id }) {
+    async deleteTodo(id: string) {
         await axios
             .post(`http://localhost:4002/tasks/${id}`)
     }
