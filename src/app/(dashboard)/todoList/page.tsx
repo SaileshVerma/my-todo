@@ -1,7 +1,7 @@
 "use client";
 import axios from "axios";
-import { useDeleteTodoMutation, useTodoListQuery } from "../hooks/todoHook";
-import { Todo } from "../models/todo";
+import { useDeleteTodoMutation, useTodoListQuery } from "../../hooks/todoHook";
+import { Todo } from "../../models/todo";
 import { useState } from "react";
 
 export default function ToDoPage() {
@@ -40,6 +40,7 @@ export default function ToDoPage() {
 
                       return (
                         <div
+                          key={e.id}
                           id={e.id}
                           className="h-full bg-gray-800 bg-opacity-90 px-8 pt-4 pb-10 rounded-lg overflow-hidden text-center relative"
                         >
