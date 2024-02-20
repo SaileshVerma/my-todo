@@ -1,4 +1,5 @@
 "use client";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 
 export default function LoginPage() {
@@ -25,10 +26,12 @@ export default function LoginPage() {
           >
             Login
           </button>
-          {/* <div className="text-gray-50 font-medium text-xs">
-            Already an existing user?
-            <button className="pl-2 text-red-500 text-base">Login in</button>
-          </div> */}
+          <div className="text-gray-50 font-medium text-xs">
+            Not a user?
+            <Link href={"/signup"} className="pl-2 text-red-500 text-base">
+              SignUp now
+            </Link>
+          </div>
         </div>
       </div>
     </>
