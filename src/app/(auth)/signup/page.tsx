@@ -1,28 +1,8 @@
-import { Children } from "react";
-import LoginLayout from "./layout";
-import Image from "next/image";
+import Link from "next/link";
 
-export default function LoginPage() {
+export default function SignUpPage() {
   return (
-    <div className="flex flex-row w-full h-full  justify-between">
-      <div className="flex flex-row w-1/2  h-full bg-red-700 justify-start items-start">
-        {/* <Image
-          layout="fill"
-          // width={50}
-          objectFit="contain"
-          src={"/img.png"}
-          alt="unable to load image"
-          fill={true}
-        ></Image> */}
-        <div className="flex flex-col pl-10 pt-4">
-          <div className="text-9xl font-mono font-bold text-white">Todo</div>
-          <div className="text-7xl font-serif font-bold text-white p-10 pl-24">
-            Plan
-          </div>
-          <div className="text-8xl font-bold text-white p-4 pl-56">Do</div>
-          <div className="text-8xl font-thin  text-white p-8">Done</div>
-        </div>
-      </div>
+    <>
       <div className="flex flex-col h-full w-1/2 justify-center items-center bg-slate-500">
         <div className="flex flex-col items-start justify-start  gap-2">
           <div className="text-gray-50 font-semibold text-xl">Name</div>
@@ -48,10 +28,12 @@ export default function LoginPage() {
           </button>
           <div className="text-gray-50 font-medium text-xs">
             Already an existing user?
-            <button className="pl-2 text-red-500 text-base">Login in</button>
+            <Link href={"/login"} className="pl-2 text-red-500 text-base">
+              Login in
+            </Link>
           </div>
         </div>
       </div>
-    </div>
+    </>
   );
 }
