@@ -3,13 +3,20 @@ import authService from '../services/authService'
 import {CreateUserInput, LoginUserInput} from "../models/auth"
 import {useRouter} from "next/navigation"
 
-export const useLoginUserMutation = () =>
-    useMutation(
+export const useLoginUserMutation = () => {
+    const router = useRouter();
+    return useMutation(
         {
             mutationFn: (loginInput: LoginUserInput) => authService.login(loginInput),
-            onSuccess: (response) => {console.log('SUNCESS ON SIDE OF HOOK ON SCUESS', response)}
+            onSuccess: (response) => {
+
+                if (response.access_token) {
+                    router.push('/')
+                }
+            }
         }
     )
+}
 
 export const useCreateUserMutation = () => {
     const router = useRouter();
@@ -20,7 +27,7 @@ export const useCreateUserMutation = () => {
             mutationFn: (createUserInput: CreateUserInput) => authService.signUp(createUserInput),
             onSuccess: (response) => {
 
-                if (response.data) {
+                if (response) {
                     router.push('/login')
                 }
 

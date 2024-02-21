@@ -1,19 +1,31 @@
 "use client";
+import { useLoginUserMutation } from "@/app/hooks/authHook";
 import { LoginUserInput } from "@/app/models/auth";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
-import { useState } from "react";
+// import { useRouter } from "next/navigation";
+import { useCallback, useState } from "react";
 
 export default function LoginPage() {
-  const router = useRouter();
-
   const [userLoginDataInput, setUserLoginDataInput] = useState<LoginUserInput>({
     email: "",
     password: "",
   });
   const [formErrors, setFormErrors] = useState<{ [key: string]: string }>({});
+  const [allowUserToLogin, setAllowUserToLogin] = useState(true);
 
-  const onFormSubmitHandler = () => {};
+  const { mutate, isPending, isError, error } = useLoginUserMutation();
+  const [isSubmit, setIsSubmit] = useState(false);
+
+  const onFormSubmitHandler = () => {
+    setFormErrors(validateForm());
+    setIsSubmit(true);
+
+    if (Object.keys(formErrors).length > 0 || !isSubmit) {
+      return;
+    }
+
+    mutate(userLoginDataInput);
+  };
 
   const validateForm = () => {
     const errorMap: { [key: string]: string } = {};
@@ -26,6 +38,8 @@ export default function LoginPage() {
       errorMap.passwordErrorText = "Password is required";
     }
 
+    // setFormErrors(errorMap);
+
     return errorMap;
   };
 
@@ -36,7 +50,7 @@ export default function LoginPage() {
           <form
             onSubmit={(event) => {
               event.preventDefault();
-              setFormErrors(validateForm());
+              validateForm();
               onFormSubmitHandler();
             }}
           >
@@ -53,7 +67,7 @@ export default function LoginPage() {
               }}
               className="w-full bg-gray-800 bg-opacity-40 rounded border border-gray-700 focus:border-indigo-500 focus:bg-gray-900  text-base outline-none text-gray-100 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out"
             />
-            <p className="text-red-500">{formErrors.emailErrorText}</p>
+            <p className="text-red-500  h-5">{formErrors.emailErrorText}</p>
             <div className="text-gray-50 font-semibold text-xl">Password</div>
             <input
               type="text"
@@ -67,15 +81,19 @@ export default function LoginPage() {
               }}
               className="w-full  bg-gray-800 bg-opacity-40 rounded border border-gray-700 focus:border-indigo-500 focus:bg-gray-900  text-base outline-none text-gray-100 py-2 px-3 pr-3 leading-8 transition-colors duration-200 ease-in-out"
             />
-            <p className="text-red-500">{formErrors.passwordErrorText}</p>
+            <p className="text-red-500  h-5">{formErrors.passwordErrorText}</p>
             <button
               type="submit"
-              // onClick={() => router.push("/signup")}
-              className="bg-red-500 rounded p-2 pl-4 pr-4 mt-5 text-white"
+              disabled={isPending}
+              className="bg-red-500 rounded p-2 pl-4 pr-4 mt-2 text-white"
             >
               Login
             </button>
+            <p className="text-red-500">
+              {isError ? `something went wrong` : ""}
+            </p>
           </form>
+
           <div className="text-gray-50 font-medium text-xs">
             Not a user?
             <Link href={"/signup"} className="pl-2 text-red-500 text-base">

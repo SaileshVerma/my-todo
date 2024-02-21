@@ -7,6 +7,7 @@ import { useState } from "react";
 
 export default function SignUpPage() {
   const { mutate, isPending, isError } = useCreateUserMutation();
+  const [isSubmit, setIsSubmit] = useState(false);
 
   const [userFormDataInput, setUserFormDataInput] = useState<CreateUserInput>({
     name: "",
@@ -16,7 +17,13 @@ export default function SignUpPage() {
   const [formErrors, setFormErrors] = useState<{ [key: string]: string }>({});
 
   const onSignUpButtonClick = (createUserInput: CreateUserInput) => {
-    // mutate(createUserInput);
+    setFormErrors(validateForm);
+    setIsSubmit(true);
+
+    if (Object.keys(formErrors).length > 0 || !isSubmit) {
+      return;
+    }
+    mutate(createUserInput);
     // setFormErrors({});
   };
 
@@ -44,7 +51,7 @@ export default function SignUpPage() {
           <form
             onSubmit={(event) => {
               event.preventDefault();
-              setFormErrors(validateForm);
+
               onSignUpButtonClick(userFormDataInput);
             }}
           >
@@ -61,7 +68,7 @@ export default function SignUpPage() {
               }}
               className="w-full bg-gray-800 bg-opacity-40 rounded border border-gray-700 focus:border-indigo-500 focus:bg-gray-900  text-base outline-none text-gray-100 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out"
             />
-            <p className="text-red-500">{formErrors.nameErrorText}</p>
+            <p className="text-red-500  h-5">{formErrors.nameErrorText}</p>
             <div className="text-gray-50 font-semibold text-xl">Email</div>
             <input
               type="text"
@@ -75,7 +82,7 @@ export default function SignUpPage() {
               }}
               className="w-full bg-gray-800 bg-opacity-40 rounded border border-gray-700 focus:border-indigo-500 focus:bg-gray-900  text-base outline-none text-gray-100 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out"
             />
-            <p className="text-red-500">{formErrors.emailErrorText}</p>
+            <p className="text-red-500 h-5">{formErrors.emailErrorText}</p>
             <div className="text-gray-50 font-semibold text-xl">Password</div>
             <input
               type="text"
@@ -89,18 +96,16 @@ export default function SignUpPage() {
               }}
               className="w-full  bg-gray-800 bg-opacity-40 rounded border border-gray-700 focus:border-indigo-500 focus:bg-gray-900  text-base outline-none text-gray-100 py-2 px-3 pr-3 leading-8 transition-colors duration-200 ease-in-out"
             />
-            <p className="text-red-500">{formErrors.passwordErrorText}</p>
+            <p className="text-red-500  h-5">{formErrors.passwordErrorText}</p>
             <button
               type="submit"
               disabled={isPending}
-              className="bg-red-500 rounded p-2 pl-4 pr-4 mt-5 text-white"
+              className="bg-red-500 rounded p-2 pl-4 pr-4 mt-2 text-white"
             >
               Sign Up
             </button>
-            <p className="text-red-500">
-              {Object.keys(formErrors).length > 0
-                ? "Unable to signUp user"
-                : ""}
+            <p className="text-red-500  h-2">
+              {isError ? "Error!:Unable to signUp user" : ""}
             </p>
           </form>
           <div className="text-gray-50 font-medium text-xs">
