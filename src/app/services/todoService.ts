@@ -4,8 +4,16 @@ const {default: axios} = require("axios");
 
 class ToDoService {
     async getToDos() {
+        const token = localStorage.getItem('token')
+
+        let headers = {
+            'Authorization': `Bearer ${token}`
+        }
+
         let response = await axios
-            .get("http://localhost:4002/tasks")
+            .get("http://localhost:4002/tasks", {
+                headers
+            })
 
         let toDosParsedList = JSON.parse(JSON.stringify(response.data));
 
@@ -21,9 +29,12 @@ class ToDoService {
             isCompleted: false
         };
 
+        const token = localStorage.getItem('token')
+
         const options = {
             headers: {
                 "Content-Type": "application/json",
+                'Authorization': `Bearer ${token}`
             },
         };
         let response = await axios
@@ -36,8 +47,16 @@ class ToDoService {
 
 
     async deleteTodo(id: string) {
+        const token = localStorage.getItem('token')
+
+        const options = {
+            headers: {
+                "Content-Type": "application/json",
+                'Authorization': `Bearer ${token}`
+            },
+        };
         await axios
-            .post(`http://localhost:4002/tasks/${id}`)
+            .post(`http://localhost:4002/tasks/${id}`, {}, options)
     }
 }
 

@@ -11,6 +11,12 @@ export const useLoginUserMutation = () => {
             onSuccess: (response) => {
 
                 if (response.access_token) {
+                    console.log("response  ---------->", response);
+                    const token = response['access_token'];
+
+                    //set the token to the local storage
+                    localStorage.setItem('token', token);
+
                     router.push('/')
                 }
             }
@@ -28,6 +34,7 @@ export const useCreateUserMutation = () => {
             onSuccess: (response) => {
 
                 if (response) {
+
                     router.push('/login')
                 }
 

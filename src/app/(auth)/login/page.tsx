@@ -3,7 +3,7 @@ import { useLoginUserMutation } from "@/app/hooks/authHook";
 import { LoginUserInput } from "@/app/models/auth";
 import Link from "next/link";
 // import { useRouter } from "next/navigation";
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 
 export default function LoginPage() {
   const [userLoginDataInput, setUserLoginDataInput] = useState<LoginUserInput>({
@@ -11,20 +11,13 @@ export default function LoginPage() {
     password: "",
   });
   const [formErrors, setFormErrors] = useState<{ [key: string]: string }>({});
-  const [allowUserToLogin, setAllowUserToLogin] = useState(true);
+  const [allowUserToLogin, setAllowUserToLogin] = useState(false);
 
   const { mutate, isPending, isError, error } = useLoginUserMutation();
-  const [isSubmit, setIsSubmit] = useState(false);
 
   const onFormSubmitHandler = () => {
+    setAllowUserToLogin(true);
     setFormErrors(validateForm());
-    setIsSubmit(true);
-
-    if (Object.keys(formErrors).length > 0 || !isSubmit) {
-      return;
-    }
-
-    mutate(userLoginDataInput);
   };
 
   const validateForm = () => {
@@ -42,6 +35,14 @@ export default function LoginPage() {
 
     return errorMap;
   };
+
+  useEffect(() => {
+    if (Object.keys(formErrors).length == 0 && allowUserToLogin) {
+      mutate(userLoginDataInput);
+    } else {
+      setAllowUserToLogin(false);
+    }
+  }, [formErrors, allowUserToLogin]);
 
   return (
     <>
