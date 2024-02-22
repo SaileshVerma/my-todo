@@ -4,6 +4,7 @@ import "./global.css";
 import Header from "../components/header";
 import Footer from "../components/footer";
 import { ReactQueryClientProvider } from "../hooks/reactQueryClientProvider";
+import { SideDrawer } from "../components/sideDrawer";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -18,18 +19,13 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    // <html lang="en">
-    //   <body className="min-h-screen">
-    //     <main className="flex flex-col justify-between h-screen">
-    //       {/* <ReactQueryClientProvider> */}
-    <div className="flex flex-col justify-between h-screen">
-      <Header />
-      <div className="container mx-auto h-full">{children}</div>
-      <Footer />
+    <div className="flex flex-row justify-start">
+      <SideDrawer />
+      <div className="flex flex-col justify-between h-screen w-screen">
+        <Header />
+        <div className="container mx-auto h-full">{children}</div>
+        <Footer />
+      </div>
     </div>
-    //       {/* </ReactQueryClientProvider> */}
-    //     </main>
-    //   </body>
-    // </html>
   );
 }
