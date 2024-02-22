@@ -47,6 +47,7 @@ export default function SignUpPage() {
   return (
     <>
       <div className="flex flex-col h-full w-1/2 justify-center items-center bg-slate-500">
+        <div className="text-gray-50 font-bold text-2xl p-10">SignUp User</div>
         <div className="flex flex-col items-start justify-start  gap-2">
           <form
             onSubmit={(event) => {
