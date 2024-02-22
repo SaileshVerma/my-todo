@@ -1,10 +1,8 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./global.css";
-import Header from "./components/header";
-import Footer from "./components/footer";
-import Home from "./(dashboard)/page";
 import { ReactQueryClientProvider } from "./hooks/reactQueryClientProvider";
+import { ReactQueryDevtools } from "@tanstack/react-query-devtools/production";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -23,6 +21,7 @@ export default function RootLayout({
       <body className="min-h-screen">
         <main className="flex flex-col justify-between h-screen">
           <ReactQueryClientProvider>
+            <ReactQueryDevtools />
             {/* <div> */}
             {/* <Header /> */}
             {children}
