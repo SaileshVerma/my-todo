@@ -31,6 +31,22 @@ class AuthService {
         return response.data;
     }
 
+    async me() {
+        const token = localStorage.getItem('token')
+
+        const options = {
+            headers: {
+                "Content-Type": "application/json",
+                'Authorization': `Bearer ${token}`
+            },
+        };
+
+        let response = await axios.get('http://localhost:4002/user', options);
+
+        console.log("HERE IN THE AUTH SIGN LOGIN SERVICE : ", response.data);
+        return response.data;
+    }
+
 }
 
 export default new AuthService();

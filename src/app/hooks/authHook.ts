@@ -1,7 +1,18 @@
-import {useMutation} from "@tanstack/react-query"
+import {useMutation, useQuery} from "@tanstack/react-query"
 import authService from '../services/authService'
 import {CreateUserInput, LoginUserInput} from "../models/auth"
 import {useRouter} from "next/navigation"
+
+export const useMeQuery = () => {
+    return useQuery(
+        {
+            queryKey: ['me'],
+            queryFn: () => authService.me(),
+
+        }
+    );
+}
+
 
 export const useLoginUserMutation = () => {
     const router = useRouter();

@@ -1,9 +1,11 @@
 "use client";
 import Image from "next/image";
 import { useState } from "react";
+import { useMeQuery } from "../hooks/authHook";
 
 export const SideDrawer = () => {
-  const [isExtended, setIsExtended] = useState(true);
+  const [isExtended, setIsExtended] = useState(false);
+  const { data: user, isLoading, isError } = useMeQuery();
 
   return (
     <div className="bg-slate-900 transition-all duration-500 ease-in-out">
@@ -11,6 +13,7 @@ export const SideDrawer = () => {
         <div>
           <div className="flex flex-row  justify-between  ">
             <button
+              disabled={isLoading}
               onClick={() => {
                 setIsExtended(true);
               }}
@@ -45,7 +48,7 @@ export const SideDrawer = () => {
               !isExtended ? "hidden" : ""
             }`}
           >
-            Welcome User Name
+            Welcome {isLoading ? "User" : user.name}
           </div>
         </div>
 
