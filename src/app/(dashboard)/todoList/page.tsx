@@ -1,10 +1,12 @@
 "use client";
-import axios from "axios";
 import { useDeleteTodoMutation, useTodoListQuery } from "../../hooks/todoHook";
 import { Todo } from "../../models/todo";
 import { useState } from "react";
+import EditTodoModal from "./components/editModal";
 
 export default function ToDoPage() {
+  const [idOfSelectedTask, setIdOfSelectedTask] = useState("");
+  const [toOpenModal, setToOpenModal] = useState(false);
   const { data, isLoading, error } = useTodoListQuery();
   const { mutate, isPending, isError } = useDeleteTodoMutation();
 
@@ -22,6 +24,13 @@ export default function ToDoPage() {
 
   return (
     <>
+      {idOfSelectedTask != "" && toOpenModal && (
+        <EditTodoModal
+          todoId={idOfSelectedTask}
+          isOpen={toOpenModal}
+          onClose={() => setToOpenModal(false)}
+        />
+      )}
       <div className="container mx-auto ">
         <section className="text-gray-900 body-font">
           <div>
@@ -42,7 +51,7 @@ export default function ToDoPage() {
                         <div
                           key={e.id}
                           id={e.id}
-                          className="h-full bg-gray-800 bg-opacity-90 px-8 pt-4 pb-10 rounded-lg overflow-hidden text-center relative"
+                          className="h-full bg-gray-800 bg-opacity-90 px-8 pt-4 pb-6 rounded-lg overflow-hidden text-center relative"
                         >
                           <h1 className="title-font sm:text-2xl text-xl font-medium text-white mb-3">
                             {e.title === "" ? "No Title!" : e.title}
@@ -51,14 +60,27 @@ export default function ToDoPage() {
                             {e.desc == "" ? "No description" : e.desc}
                           </p>
 
-                          <div className="text-center mt-2 leading-none flex justify-center absolute bottom-0 left-0 w-full py-4">
-                            <span className="text-gray-500 inline-flex items-center leading-none text-sm">
+                          <div className="flex flex-row justify-end">
+                            <span className="text-gray-500 inline-flex items-center leading-none text-sm px-5">
                               <button
                                 disabled={isPending}
                                 onClick={() => deleteTodoById(e.id)}
                                 className="text-red-600 "
                               >
                                 Remove
+                              </button>
+                            </span>
+
+                            <span className="text-gray-500 inline-flex items-center leading-none text-sm">
+                              <button
+                                // disabled={isPending}
+                                onClick={() => {
+                                  setIdOfSelectedTask(e.id);
+                                  setToOpenModal(true);
+                                }}
+                                className="text-red-600 "
+                              >
+                                Edit
                               </button>
                             </span>
                           </div>
