@@ -16,7 +16,7 @@ const About = () => {
       <ul className="pt-2">
         <li>
           <span className="font-bold text-gray-800">Create a Task:</span> Click
-          on the "Add Task" button and enter the task details, such as title,
+          on the Add Task button and enter the task details, such as title,
           description, priority, and due date.
         </li>
         <li>
@@ -45,7 +45,7 @@ const About = () => {
       <div className="text-2xl text-gray-800 font-semi-bold pt-4">Our Team</div>
       <div className="text-xl">
         Our team is passionate about productivity and helping people achieve
-        their goals. We're constantly working on improving our app to provide
+        their goals. We re constantly working on improving our app to provide
         you with the best task management experience possible.
       </div>
     </div>

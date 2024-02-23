@@ -1,8 +1,13 @@
 "use client";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useCreateTodoMutation } from "../hooks/todoHook";
+import isTokenExpired from "../helper/tokenHelper";
+import { useRouter } from "next/navigation";
+// import { useAuth } from "../hooks/authHook";
 
 export default function Home() {
+  // useAuth();
+  const router = useRouter();
   const [todoItemTitle, setTodoItemTitle] = useState("");
   const [todoItemDesc, setTodoItemDesc] = useState("");
 
@@ -27,53 +32,17 @@ export default function Home() {
 
     mutate(todo);
 
-    // const createTaskDto = {
-    //   title: todo.title,
-    //   desc: todo.desc,
-    // };
-
-    // const options = {
-    //   headers: {
-    //     "Content-Type": "application/json",
-    //   },
-    // };
-
-    // axios
-    //   .get("http://localhost:4001/tasks", options)
-    //   .then((res) => {
-    //     console.log("RESPONSE ==== : ", res);
-    //   })
-    //   .catch((err) => {
-    //     console.log("ERROR: ====", err);
-    //   });
-
-    // axios
-    //   .post("http://localhost:4002/tasks", createTaskDto, options)
-    //   .then((res) => {
-    //     console.log("RESPONSE ==== : ", res);
-    //   })
-    //   .catch((err) => {
-    //     console.log("ERROR: ====", err);
-    //   });
-
-    // let toDosJson = localStorage.getItem("todos");
-    // if (toDosJson) {
-    //   let toDosList = JSON.parse(toDosJson);
-    //   toDosList.push(todo);
-
-    //   localStorage.setItem("todos", JSON.stringify(toDosList));
-    // } else {
-    //   localStorage.setItem("todos", JSON.stringify([todo]));
-    // }
-
-    // const variables = {
-    //   title: todoItemTitle,
-    //   desc: todoItemDesc,
-    // };
-
     setTodoItemTitle("");
     setTodoItemDesc("");
   };
+
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    const tokenExpired = isTokenExpired(token ?? "");
+    if (tokenExpired) {
+      router.push("/login");
+    }
+  }, []);
 
   return (
     <>
