@@ -54,10 +54,29 @@ export const useUpdateTodoMutation = () => {
 
     return useMutation({
         mutationFn: (todo: Todo) => todoService.updateTodo(todo),
-        onSuccess: () => {
-            useClient.invalidateQueries({
-                queryKey: ["todos"]
-            })
+        onSuccess: (res) => {
+
+            const updatedTodo = res.data;
+
+            useClient.setQueryData(
+                ["todos"],
+                (oldData: Array<Todo>) => {
+                    // const newState = [...oldData];
+
+                    let newState = oldData.map((item: Todo) => {
+                        if (item.id == updatedTodo.id) {
+                            return item = updatedTodo;
+                        }
+
+                        return item;
+                    })
+
+                    return newState;
+                }
+            );
+            // useClient.invalidateQueries({
+            //     queryKey: ["todos"]
+            // })
         }
     })
 }

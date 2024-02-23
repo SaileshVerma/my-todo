@@ -68,8 +68,9 @@ class ToDoService {
                 'Authorization': `Bearer ${token}`
             },
         }
-        await axios.put(`http://localhost:4002/tasks/${todo.id}`, todo, options);
+        let response = await axios.put(`http://localhost:4002/tasks/${todo.id}`, todo, options);
 
+        return response;
     }
 }
 
