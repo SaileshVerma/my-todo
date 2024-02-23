@@ -7,9 +7,12 @@ export default function Modal(modalProps: {
     <dialog open={modalProps.isOpen}>
       <div className="fixed  inset-0 z-20 flex items-center justify-center">
         <div className="modal-overlay fixed inset-0  bg-black opacity-50"></div>
-        <div className="modal-content absolute transform transition-transform bg-white w-auto  max-w-3xl rounded-lg shadow-lg">
+        <div className="modal-content absolute transform transition-transform bg-gray-900 w-auto  max-w-3xl rounded-lg shadow-lg">
           <div className="absolute top-0 right-0">
-            <button className="p-1" onClick={modalProps.onClose}>
+            <button
+              className="p-1 pr-3 text-white"
+              onClick={modalProps.onClose}
+            >
               Close
             </button>
           </div>
