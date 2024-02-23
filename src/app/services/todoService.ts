@@ -58,6 +58,19 @@ class ToDoService {
         await axios
             .post(`http://localhost:4002/tasks/${id}`, {}, options)
     }
+
+    async updateTodo(todo: Todo) {
+        const token = localStorage.getItem('token')
+
+        const options = {
+            headers: {
+                "Content-Type": "application/json",
+                'Authorization': `Bearer ${token}`
+            },
+        }
+        await axios.put(`http://localhost:4002/tasks/${todo.id}`, todo, options);
+
+    }
 }
 
 

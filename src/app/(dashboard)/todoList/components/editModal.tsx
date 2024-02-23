@@ -1,5 +1,5 @@
 import Modal from "@/app/components/modal";
-import { getTodoById } from "@/app/hooks/todoHook";
+import { getTodoById, useUpdateTodoMutation } from "@/app/hooks/todoHook";
 import { Todo } from "@/app/models/todo";
 import { useState } from "react";
 
@@ -14,6 +14,7 @@ export default function EditTodoModal({
 }) {
   const todoItem: Todo = getTodoById(todoId);
   const [createTodoInput, setCreateTodoInput] = useState(todoItem);
+  const { mutate: updateTodo, isPending, isError } = useUpdateTodoMutation();
 
   return (
     <div>
@@ -50,7 +51,14 @@ export default function EditTodoModal({
             placeholder="Enter your description"
             className="w-full bg-gray-800 bg-opacity-40 rounded border border-gray-700 focus:border-indigo-500 focus:bg-gray-900 focus:ring-2 focus:ring-indigo-900 h-32 text-base outline-none text-gray-100 py-1 px-3 resize-none leading-6 transition-colors duration-200 ease-in-out"
           ></textarea>
-          <button>Submit</button>
+          <button
+            disabled={isPending}
+            onClick={() => {
+              updateTodo(createTodoInput);
+            }}
+          >
+            Submit
+          </button>
         </div>
       </Modal>
     </div>

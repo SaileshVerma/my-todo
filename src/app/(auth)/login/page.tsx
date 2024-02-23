@@ -2,8 +2,7 @@
 import { useLoginUserMutation } from "@/app/hooks/authHook";
 import { LoginUserInput } from "@/app/models/auth";
 import Link from "next/link";
-// import { useRouter } from "next/navigation";
-import { useCallback, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 
 export default function LoginPage() {
   const [userLoginDataInput, setUserLoginDataInput] = useState<LoginUserInput>({

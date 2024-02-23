@@ -49,5 +49,17 @@ export const useDeleteTodoMutation = () => {
         }
     })
 }
+export const useUpdateTodoMutation = () => {
+    const useClient = useQueryClient();
+
+    return useMutation({
+        mutationFn: (todo: Todo) => todoService.updateTodo(todo),
+        onSuccess: () => {
+            useClient.invalidateQueries({
+                queryKey: ["todos"]
+            })
+        }
+    })
+}
 
 
