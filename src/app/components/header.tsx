@@ -1,4 +1,11 @@
+"use client";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
+
+function isActiveTab(currentLink: string): boolean {
+  const router = usePathname();
+  return router == currentLink;
+}
 
 const Header = () => {
   return (
@@ -18,18 +25,33 @@ const Header = () => {
           <span className="ml-3 text-xl">My-ToDo</span>
         </a>
         <nav className="md:ml-auto flex flex-wrap items-center text-base justify-center">
-          <Link href={"/"} className="mr-5 hover:text-gray-900">
+          <Link
+            href={"/"}
+            className={`mr-5 hover:text-gray-900  ${
+              isActiveTab("/") && "text-black font-semibold"
+            }`}
+          >
             Home
           </Link>
-          <Link href={"/todoList"} className="mr-5 hover:text-gray-900">
+          <Link
+            href={"/todoList"}
+            className={`mr-5 hover:text-gray-900  ${
+              isActiveTab("/todoList") && "text-black font-semibold"
+            }`}
+          >
             My List
           </Link>
-          <Link href={"/about"} className="mr-5 hover:text-gray-900">
+          <Link
+            href={"/about"}
+            className={`mr-5 hover:text-gray-900  ${
+              isActiveTab("/about") && "text-black font-semibold"
+            }`}
+          >
             About
           </Link>
-          <Link href={"/"} className="mr-5 hover:text-gray-900">
+          {/* <Link href={"/"} className="mr-5 hover:text-gray-900">
             Contact Us
-          </Link>
+          </Link> */}
         </nav>
       </div>
     </header>
