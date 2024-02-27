@@ -13,6 +13,7 @@
     "@tanstack/react-query-devtools": "^5.24.0",
     "axios": "^1.6.7",
     "express": "^4.18.2",
+    "js-cookie": "^3.0.5",
     "jwt-decode": "^4.0.0",
     "next": "14.1.0",
     "react": "^18",
@@ -21,6 +22,7 @@
     "sequelize": "^6.37.0"
   },
   "devDependencies": {
+    "@types/js-cookie": "^3.0.6",
     "@types/node": "^20",
     "@types/react": "^18",
     "@types/react-dom": "^18",
