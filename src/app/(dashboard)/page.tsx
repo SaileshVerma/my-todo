@@ -1,7 +1,6 @@
 "use client";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useCreateTodoMutation } from "../hooks/todoHook";
-import isTokenExpired from "../helper/tokenHelper";
 import { useRouter } from "next/navigation";
 // import { useAuth } from "../hooks/authHook";
 
@@ -36,13 +35,13 @@ export default function Home() {
     setTodoItemDesc("");
   };
 
-  useEffect(() => {
-    const token = localStorage.getItem("token");
-    const tokenExpired = isTokenExpired(token ?? "");
-    if (tokenExpired) {
-      router.push("/login");
-    }
-  }, []);
+  // useEffect(() => {
+  //   const token = localStorage.getItem("token");
+  //   const tokenExpired = isTokenExpired(token ?? "");
+  //   if (tokenExpired) {
+  //     router.push("/login");
+  //   }
+  // }, []);
 
   return (
     <>
