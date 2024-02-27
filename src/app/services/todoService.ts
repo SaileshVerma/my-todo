@@ -1,10 +1,14 @@
+// import {cookies} from "next/headers";
 import {Todo} from "../models/todo";
+import Cookies from 'js-cookie';
 
 const {default: axios} = require("axios");
 
 class ToDoService {
     async getToDos() {
-        const token = localStorage.getItem('token')
+        // const token = localStorage.getItem('token')
+
+        const token = Cookies.get('token');
 
         let headers = {
             'Authorization': `Bearer ${token}`
@@ -29,7 +33,10 @@ class ToDoService {
             isCompleted: false
         };
 
-        const token = localStorage.getItem('token')
+        // const token = localStorage.getItem('token')
+
+        // const token = cookieStore.get('token')?.value ?? '';
+        const token = Cookies.get('token');
 
         const options = {
             headers: {
@@ -47,7 +54,10 @@ class ToDoService {
 
 
     async deleteTodo(id: string) {
-        const token = localStorage.getItem('token')
+        // const token = localStorage.getItem('token')
+        // const cookieStore = cookies();
+        // const token = cookieStore.get('token')?.value ?? '';
+        const token = Cookies.get('token');
 
         const options = {
             headers: {
@@ -60,7 +70,11 @@ class ToDoService {
     }
 
     async updateTodo(todo: Todo) {
-        const token = localStorage.getItem('token')
+        // const token = localStorage.getItem('token')
+        // const cookieStore = cookies();
+        // const token = cookieStore.get('token')?.value ?? '';
+        const token = Cookies.get('token');
+
 
         const options = {
             headers: {

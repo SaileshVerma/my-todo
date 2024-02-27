@@ -1,8 +1,8 @@
 import axios from "axios";
 import {CreateUserInput, LoginUserInput} from "../models/auth";
+import Cookies from 'js-cookie';
 
 class AuthService {
-
 
     async signUp(userInput: CreateUserInput) {
         const options = {
@@ -32,7 +32,10 @@ class AuthService {
     }
 
     async me() {
-        const token = localStorage.getItem('token')
+        // const token = localStorage.getItem('token')
+
+        // const cookieStore = cookies();
+        const token = Cookies.get('token')
 
         const options = {
             headers: {
