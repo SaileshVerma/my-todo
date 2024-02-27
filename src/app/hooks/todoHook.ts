@@ -82,3 +82,32 @@ export const useUpdateTodoMutation = () => {
 }
 
 
+
+
+export const useUpdateTodoIsCompletedMutation = () => {
+    const useClient = useQueryClient();
+
+    return useMutation({
+        mutationFn: (todo: Todo) => todoService.updateTodo(todo),
+        onSuccess: (res) => {
+            const updatedTodo = res.data;
+
+            useClient.setQueryData(
+                ["todos"],
+                (oldData: Array<Todo>) => {
+                    let newState = oldData.map((todo) => {
+                        if (todo.id == updatedTodo.id) {
+                            return {...todo, isCompleted: updatedTodo.isCompleted};
+                        }
+                        return todo;
+                    })
+
+                    return newState;
+                }
+            );
+
+        }
+    })
+}
+
+

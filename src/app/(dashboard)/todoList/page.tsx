@@ -1,5 +1,9 @@
 "use client";
-import { useDeleteTodoMutation, useTodoListQuery } from "../../hooks/todoHook";
+import {
+  useDeleteTodoMutation,
+  useTodoListQuery,
+  useUpdateTodoIsCompletedMutation,
+} from "../../hooks/todoHook";
 import { Todo } from "../../models/todo";
 import { useState } from "react";
 import EditTodoModal from "./components/editModal";
@@ -9,6 +13,11 @@ export default function ToDoPage() {
   const [toOpenModal, setToOpenModal] = useState(false);
   const { data, isLoading, error } = useTodoListQuery();
   const { mutate, isPending, isError } = useDeleteTodoMutation();
+  const {
+    mutate: toggleIsCompleted,
+    isPending: toggleCompletedIsPending,
+    isError: _,
+  } = useUpdateTodoIsCompletedMutation();
 
   const deleteTodoById = (id: string) => {
     mutate(id);
@@ -32,7 +41,7 @@ export default function ToDoPage() {
         />
       )}
       <div className="container mx-auto ">
-        <section className="text-gray-900 body-font">
+        <section className={`text-gray-900 body-font `}>
           <div>
             <div>
               <div className="p-8 lg:w-full h-[50%]">
@@ -51,9 +60,31 @@ export default function ToDoPage() {
                         <div
                           key={e.id}
                           id={e.id}
-                          className="h-full bg-gray-800 bg-opacity-90 px-8 pt-4 pb-6 rounded-lg overflow-hidden text-center relative"
+                          className={`${
+                            e.isCompleted && "opacity-60"
+                          } h-full bg-gray-800 bg-opacity-90 px-8 pt-4 pb-6 rounded-lg overflow-hidden text-center relative`}
                         >
-                          <h1 className="title-font sm:text-2xl text-xl font-medium text-white mb-3">
+                          <div className="check-box absolute right-2 top-2">
+                            <input
+                              disabled={toggleCompletedIsPending}
+                              onClick={() =>
+                                toggleIsCompleted({
+                                  ...e,
+                                  isCompleted: !e.isCompleted ?? false,
+                                })
+                              }
+                              height={20}
+                              width={20}
+                              className="accent-blue-200"
+                              checked={e.isCompleted ?? false}
+                              type="checkbox"
+                            />
+                          </div>
+                          <h1
+                            className={`title-font sm:text-2xl text-xl font-medium text-white mb-3  ${
+                              e.isCompleted && "line-through"
+                            }`}
+                          >
                             {e.title === "" ? "No Title!" : e.title}
                           </h1>
                           <p className="leading-relaxed mb-3">
